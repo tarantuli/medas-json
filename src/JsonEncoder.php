@@ -18,9 +18,7 @@ readonly class JsonEncoder
     public function encode(mixed $data, bool $prettyPrint = false): string
     {
         if (is_array($data)) {
-            array_walk_recursive($data, function (&$value) {
-                $value = $this->stringProtector->encode($value);
-            });
+            $data = $this->encodeArray($data);
         }
         else {
             $data = $this->stringProtector->encode($data);
@@ -35,19 +33,43 @@ readonly class JsonEncoder
         return json_encode($data, flags: $flags);
     }
 
+    private function encodeArray(array $data): array
+    {
+        $encoded = [];
+
+        foreach ($data as $key => $value) {
+            $encoded[$this->stringProtector->encode($key)] = is_array($value)
+                ? $this->encodeArray($value)
+                : $this->stringProtector->encode($value);
+        }
+
+        return $encoded;
+    }
+
     public function decode(string $string): mixed
     {
         $data = json_decode($string, flags: JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR);
 
         if (is_array($data)) {
-            array_walk_recursive($data, function (&$value) {
-                $value = $this->stringProtector->decode($value);
-            });
+            $data = $this->decodeArray($data);
         }
         else {
             $data = $this->stringProtector->decode($data);
         }
 
         return $data;
+    }
+
+    private function decodeArray(array $data): array
+    {
+        $decoded = [];
+
+        foreach ($data as $key => $value) {
+            $decoded[$this->stringProtector->decode($key)] = is_array($value)
+                ? $this->decodeArray($value)
+                : $this->stringProtector->decode($value);
+        }
+
+        return $decoded;
     }
 }
