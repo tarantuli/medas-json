@@ -14,6 +14,16 @@ readonly class StringProtector
 
     public function encode(mixed $value): mixed
     {
+        if (is_iterable($value)) {
+            $encoded = [];
+
+            foreach ($value as $key => $subValue) {
+                $encoded[$this->encode($key)] = $this->encode($subValue);
+            }
+
+            return $encoded;
+        }
+
         if (!is_string($value)) {
             return $value;
         }
@@ -27,6 +37,16 @@ readonly class StringProtector
 
     public function decode(mixed $value): mixed
     {
+        if (is_iterable($value)) {
+            $decoded = [];
+
+            foreach ($value as $key => $subValue) {
+                $decoded[$this->decode($key)] = $this->decode($subValue);
+            }
+
+            return $decoded;
+        }
+
         if (!is_string($value)) {
             return $value;
         }
