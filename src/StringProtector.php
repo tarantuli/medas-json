@@ -12,6 +12,7 @@ readonly class StringProtector
     private const ENCODING_PREFIX = 'b64:';
     private const PREFIX_LENGTH = 4;
 
+    /** Ensures that all byte strings in the given value are represented as valid unicode strings */
     public function encode(mixed $value): mixed
     {
         if (is_iterable($value)) {
@@ -35,6 +36,7 @@ readonly class StringProtector
         return $value;
     }
 
+    /** Undoes the effect of encode(), restoring the original byte strings */
     public function decode(mixed $value): mixed
     {
         if (is_iterable($value)) {
