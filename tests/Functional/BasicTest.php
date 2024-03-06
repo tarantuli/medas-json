@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Medas\JsonTest\Functional;
 
 use Medas\Json\JsonEncoder;
+use Medas\Json\Settings;
 use PHPUnit\Framework\TestCase;
 
 class BasicTest extends TestCase
@@ -21,6 +22,6 @@ class BasicTest extends TestCase
         ];
 
         self::assertEquals($data, $encoder->decode($encoder->encode($data)));
-        self::assertEquals($data, $encoder->decode($encoder->encode($data, true)));
+        self::assertEquals($data, $encoder->decode($encoder->encode($data, new Settings(true))));
     }
 }
