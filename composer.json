@@ -1,6 +1,9 @@
 {
     "name": "morphp/medas-json",
     "description": "Medas JSON",
+    "keywords": [
+        "data manipulation"
+    ],
     "authors": [
         {
             "name": "Patrick Morpey",
