@@ -18,7 +18,7 @@ readonly class JsonEncoder
 
     /**
      * Encodes the given data to a JSON string. It ensures that all byte strings in the given value are represented as
-     * valid unicode strings.
+     * valid Unicode strings.
      */
     public function encode(mixed $data, Settings $settings = null): string
     {
