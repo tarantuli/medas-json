@@ -19,7 +19,7 @@ readonly class StringProtector
             $encoded = [];
 
             foreach ($value as $key => $subValue) {
-                $encoded[$this->encode($key)] = $this->encode($subValue);
+                $encoded[$this->encode($key, $urlSafe)] = $this->encode($subValue, $urlSafe);
             }
 
             return $encoded;
@@ -47,7 +47,7 @@ readonly class StringProtector
             $decoded = [];
 
             foreach ($value as $key => $subValue) {
-                $decoded[$this->decode($key)] = $this->decode($subValue);
+                $decoded[$this->decode($key, $urlSafe)] = $this->decode($subValue, $urlSafe);
             }
 
             return $decoded;
