@@ -8,6 +8,7 @@ class Settings
 {
     public function __construct(
         public bool $prettyPrint,
+        public bool $urlSafe = false,
     )
     {
     }

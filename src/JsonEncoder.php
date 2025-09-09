@@ -23,7 +23,7 @@ readonly class JsonEncoder
     public function encode(mixed $data, Settings $settings = null): string
     {
         $settings ??= $this->settingsFactory->create();
-        $data = $this->stringProtector->encode($data);
+        $data = $this->stringProtector->encode($data, $settings->urlSafe);
         $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR;
 
         if ($settings->prettyPrint) {
@@ -33,10 +33,10 @@ readonly class JsonEncoder
         return json_encode($data, flags: $flags);
     }
 
-    public function decode(string $string): mixed
+    public function decode(string $string, Settings $settings = null): mixed
     {
         $data = json_decode($string, flags: JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR);
 
-        return $this->stringProtector->decode($data);
+        return $this->stringProtector->decode($data, $settings ? $settings->urlSafe : false);
     }
 }
