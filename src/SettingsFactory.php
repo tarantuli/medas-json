@@ -13,6 +13,7 @@ readonly class SettingsFactory
     {
         return new Settings(
             prettyPrint: false,
+            urlSafe: false,
         );
     }
 }

@@ -7,7 +7,7 @@ namespace Medas\Json;
 class Settings
 {
     public function __construct(
-        public bool $prettyPrint,
+        public bool $prettyPrint = false,
         public bool $urlSafe = false,
     )
     {
