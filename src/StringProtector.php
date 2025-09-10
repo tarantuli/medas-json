@@ -41,13 +41,13 @@ readonly class StringProtector
     }
 
     /** Undoes the effect of encode(), restoring the original byte strings */
-    public function decode(mixed $value, bool $urlSafe = false): mixed
+    public function decode(mixed $value): mixed
     {
         if (is_iterable($value)) {
             $decoded = [];
 
             foreach ($value as $key => $subValue) {
-                $decoded[$this->decode($key, $urlSafe)] = $this->decode($subValue, $urlSafe);
+                $decoded[$this->decode($key)] = $this->decode($subValue);
             }
 
             return $decoded;
@@ -58,11 +58,9 @@ readonly class StringProtector
         }
 
         if (str_starts_with($value, self::ENCODING_PREFIX)) {
-            $value = base64_decode(substr($value, self::PREFIX_LENGTH), true);
-
-            if ($urlSafe) {
-                $value = str_replace(['-', '_'], ['+', '/'], $value);
-            }
+            // Remove the encoding prefix and undo any url-safe replacements
+            $value = str_replace(['-', '_'], ['+', '/'], substr($value, self::PREFIX_LENGTH));
+            $value = base64_decode($value, true);
         }
 
         return $value;

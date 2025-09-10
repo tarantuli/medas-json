@@ -36,6 +36,6 @@ class BasicTest extends TestCase
         ];
 
         self::assertEquals($data, $protector->decode($protector->encode($data)));
-        self::assertEquals($data, $protector->decode($protector->encode($data, true), true));
+        self::assertEquals($data, $protector->decode($protector->encode($data, true)));
     }
 }

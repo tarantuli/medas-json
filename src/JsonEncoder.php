@@ -33,10 +33,10 @@ readonly class JsonEncoder
         return json_encode($data, flags: $flags);
     }
 
-    public function decode(string $string, Settings $settings = null): mixed
+    public function decode(string $string): mixed
     {
         $data = json_decode($string, flags: JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR);
 
-        return $this->stringProtector->decode($data, $settings ? $settings->urlSafe : false);
+        return $this->stringProtector->decode($data);
     }
 }
