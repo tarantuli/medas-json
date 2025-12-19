@@ -20,7 +20,7 @@ readonly class JsonEncoder
      * Encodes the given data to a JSON string. It ensures that all byte strings in the given value are represented as
      * valid Unicode strings.
      */
-    public function encode(mixed $data, Settings $settings = null): string
+    public function encode(mixed $data, Settings|null $settings = null): string
     {
         $settings ??= $this->settingsFactory->create();
         $data = $this->stringProtector->encode($data, $settings->urlSafe);
