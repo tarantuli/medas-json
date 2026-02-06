@@ -1,7 +1,7 @@
 {
   "name": "morphp/medas-json",
   "description": "Medas JSON",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "keywords": [
     "data manipulation"
   ],
@@ -13,12 +13,12 @@
   ],
   "type": "library",
   "require": {
-    "morphp/medas-core": "^2",
+    "morphp/medas-core": "^1",
     "ext-mbstring": "*",
-    "php": "^8.4"
+    "php": "^8.2"
   },
   "require-dev": {
-    "morphp/medas-service-manager": "^2",
+    "morphp/medas-service-manager": "^1",
     "phpunit/phpunit": "^9.5"
   },
   "autoload": {

@@ -9,8 +9,8 @@ use Medas\Core\Attributes\Service;
 #[Service]
 readonly class StringProtector
 {
-    private const string ENCODING_PREFIX = 'b64:';
-    private const int PREFIX_LENGTH = 4;
+    private const ENCODING_PREFIX = 'b64:';
+    private const PREFIX_LENGTH = 4;
 
     /** Ensures that all byte strings in the given value are represented as valid Unicode strings */
     public function encode(mixed $value, bool $urlSafe = false): mixed
