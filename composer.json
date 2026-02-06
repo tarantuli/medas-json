@@ -1,30 +1,29 @@
 {
-    "name": "morphp/medas-json",
-    "description": "Medas JSON",
-    "keywords": [
-        "data manipulation"
-    ],
-    "authors": [
-        {
-            "name": "Patrick Morpey",
-            "email": "patrick@morphp.nl"
-        }
-    ],
-    "type": "library",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "morphp/medas-core": "dev-dev",
-        "ext-mbstring": "*"
-    },
-    "require-dev": {
-        "morphp/medas-service-manager": "dev-dev",
-        "phpunit/phpunit": "^9.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "Medas\\Json\\": "src/",
-            "Medas\\JsonTest\\": "tests/"
-        }
+  "name": "morphp/medas-json",
+  "description": "Medas JSON",
+  "version": "2.0.0",
+  "keywords": [
+    "data manipulation"
+  ],
+  "authors": [
+    {
+      "name": "Patrick Morpey",
+      "email": "patrick@morphp.nl"
     }
+  ],
+  "type": "library",
+  "require": {
+    "morphp/medas-core": "^2",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "morphp/medas-service-manager": "^2",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Medas\\Json\\": "src/",
+      "Medas\\JsonTest\\": "tests/"
+    }
+  }
 }
