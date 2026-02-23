@@ -59,8 +59,14 @@ readonly class StringProtector
 
         if (str_starts_with($value, self::ENCODING_PREFIX)) {
             // Remove the encoding prefix and undo any url-safe replacements
-            $value = str_replace(['-', '_'], ['+', '/'], substr($value, self::PREFIX_LENGTH));
-            $value = base64_decode($value, true);
+            $prepared = str_replace(['-', '_'], ['+', '/'], substr($value, self::PREFIX_LENGTH));
+            $decoded = base64_decode($prepared, true);
+
+            if ($decoded === false) {
+                throw new Exceptions\InvalidBase64String($value);
+            }
+
+            $value = $decoded;
         }
 
         return $value;

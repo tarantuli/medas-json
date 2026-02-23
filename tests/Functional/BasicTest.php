@@ -24,7 +24,7 @@ class BasicTest extends TestCase
         self::assertEquals($data, $encoder->decode($encoder->encode($data, new Settings(true))));
     }
 
-    public function testStringProector(): void
+    public function testStringProtector(): void
     {
         $protector = service(StringProtector::class);
 

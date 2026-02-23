@@ -33,7 +33,14 @@ readonly class JsonEncoder
         return json_encode($data, flags: $flags);
     }
 
-    public function decode(string $string): mixed
+    /**
+     * Decodes the given JSON string into a PHP value.
+     *
+     * $settings is provided for future compatibility and will be ignored for now.
+     *
+     * @noinspection PhpUnusedParameterInspection
+     */
+    public function decode(string $string, Settings|null $settings = null): mixed
     {
         $data = json_decode($string, flags: JSON_OBJECT_AS_ARRAY | JSON_THROW_ON_ERROR);
 
