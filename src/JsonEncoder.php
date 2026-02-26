@@ -36,7 +36,7 @@ readonly class JsonEncoder
     /**
      * Decodes the given JSON string into a PHP value.
      *
-     * $settings is provided for future compatibility and will be ignored for now.
+     * The $settings variable is provided for future compatibility and will be ignored for now.
      *
      * @noinspection PhpUnusedParameterInspection
      */

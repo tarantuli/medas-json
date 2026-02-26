@@ -22,7 +22,11 @@
   },
   "autoload": {
     "psr-4": {
-      "Medas\\Json\\": "src/",
+      "Medas\\Json\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "Medas\\JsonTest\\": "tests/"
     }
   }
