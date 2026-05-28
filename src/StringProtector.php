@@ -15,50 +15,39 @@ readonly class StringProtector
     /** Ensures that all byte strings in the given value are represented as valid Unicode strings */
     public function encode(mixed $value, bool $urlSafe = false): mixed
     {
-        if (is_iterable($value)) {
-            $encoded = [];
+        if (is_string($value)) {
+            if (!mb_check_encoding($value, 'UTF-8') || str_starts_with($value, self::ENCODING_PREFIX)) {
+                $encoded = self::ENCODING_PREFIX . base64_encode($value);
 
-            foreach ($value as $key => $subValue) {
-                $encoded[$this->encode($key, $urlSafe)] = $this->encode($subValue, $urlSafe);
+                return $urlSafe ? str_replace(['+', '/', '='], ['-', '_', ''], $encoded) : $encoded;
             }
 
-            return $encoded;
-        }
-
-        if (!is_string($value)) {
             return $value;
         }
 
-        if (!mb_check_encoding($value, 'UTF-8') || str_starts_with($value, self::ENCODING_PREFIX)) {
-            $value = self::ENCODING_PREFIX . base64_encode($value);
-
-            if ($urlSafe) {
-                $value = str_replace(['+', '/', '='], ['-', '_', ''], $value);
-            }
+        if (!is_iterable($value)) {
+            return $value;
         }
 
-        return $value;
+        $encoded = [];
+
+        foreach ($value as $key => $subValue) {
+            $encodedKey = is_string($key) ? $this->encode($key, $urlSafe) : $key;
+            $encoded[$encodedKey] = $this->encode($subValue, $urlSafe);
+        }
+
+        return $encoded;
     }
 
     /** Undoes the effect of encode(), restoring the original byte strings */
     public function decode(mixed $value): mixed
     {
-        if (is_iterable($value)) {
-            $decoded = [];
-
-            foreach ($value as $key => $subValue) {
-                $decoded[$this->decode($key)] = $this->decode($subValue);
+        if (is_string($value)) {
+            if (!str_starts_with($value, self::ENCODING_PREFIX)) {
+                return $value;
             }
 
-            return $decoded;
-        }
-
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        if (str_starts_with($value, self::ENCODING_PREFIX)) {
-            // Remove the encoding prefix and undo any url-safe replacements
+            // Undo any url-safe replacements before decoding
             $prepared = str_replace(['-', '_'], ['+', '/'], substr($value, self::PREFIX_LENGTH));
             $decoded = base64_decode($prepared, true);
 
@@ -66,9 +55,20 @@ readonly class StringProtector
                 throw new Exceptions\InvalidBase64String($value);
             }
 
-            $value = $decoded;
+            return $decoded;
         }
 
-        return $value;
+        if (!is_iterable($value)) {
+            return $value;
+        }
+
+        $decoded = [];
+
+        foreach ($value as $key => $subValue) {
+            $decodedKey = is_string($key) ? $this->decode($key) : $key;
+            $decoded[$decodedKey] = $this->decode($subValue);
+        }
+
+        return $decoded;
     }
 }
