@@ -25,6 +25,10 @@ readonly class StringProtector
             return $value;
         }
 
+        if (is_object($value) && !$value instanceof \BackedEnum) {
+            throw new Exceptions\ObjectFoundInValue($value);
+        }
+
         if (!is_iterable($value)) {
             return $value;
         }
