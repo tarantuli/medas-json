@@ -8,7 +8,8 @@ use Medas\Core\{
     Attributes\DataHolder,
     Attributes\PreferredDefault,
     Attributes\Service,
-    Interfaces\Serializer
+    Interfaces\Serializer,
+    Interfaces\Uuid
 };
 
 #[Service]
@@ -40,6 +41,10 @@ readonly class StringProtector
         if (is_object($value)) {
             if (attribute(DataHolder::class, new \ReflectionClass($value))) {
                 return $this->encode($this->serializer->serialize($value), $urlSafe);
+            }
+
+            if ($value instanceof Uuid) {
+                return (string) $value;
             }
 
             if ($value instanceof \DateTimeInterface) {
