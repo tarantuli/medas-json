@@ -10,8 +10,9 @@ use Medas\Core\Attributes\Service;
 readonly class JsonEncoder
 {
     public function __construct(
-        private SettingsFactory $settingsFactory,
-        private StringProtector $stringProtector,
+        private InvalidUtf8OffsetFinder $invalidUtf8OffsetFinder,
+        private SettingsFactory         $settingsFactory,
+        private StringProtector         $stringProtector,
     )
     {
     }
@@ -30,7 +31,18 @@ readonly class JsonEncoder
             $flags |= JSON_PRETTY_PRINT;
         }
 
-        return json_encode($data, flags: $flags);
+        try {
+            return json_encode($data, flags: $flags);
+        }
+        catch (\JsonException $e) {
+            if (json_last_error() === JSON_ERROR_UTF8) {
+                $offset = $this->invalidUtf8OffsetFinder->find($data);
+
+                throw new Exceptions\MalformedUtf8String($offset, var_export($data, true));
+            }
+
+            throw $e;
+        }
     }
 
     /**
