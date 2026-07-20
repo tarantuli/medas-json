@@ -4,13 +4,25 @@ declare(strict_types=1);
 
 namespace Medas\Json;
 
-use Medas\Core\Attributes\Service;
+use Medas\Core\{
+    Attributes\DataHolder,
+    Attributes\PreferredDefault,
+    Attributes\Service,
+    Interfaces\Serializer
+};
 
 #[Service]
 readonly class StringProtector
 {
     private const string ENCODING_PREFIX = 'b64:';
     private const int PREFIX_LENGTH = 4;
+
+    public function __construct(
+        #[PreferredDefault('Medas\ObjectToArraySerializer\ObjectToArraySerializer')]
+        private Serializer $serializer,
+    )
+    {
+    }
 
     /** Ensures that all byte strings in the given value are represented as valid Unicode strings */
     public function encode(mixed $value, bool $urlSafe = false): mixed
@@ -23,6 +35,10 @@ readonly class StringProtector
             }
 
             return $value;
+        }
+
+        if (is_object($value) && attribute(DataHolder::class, new \ReflectionClass($value))) {
+            return $this->encode($this->serializer->serialize($value), $urlSafe);
         }
 
         if (is_object($value) && !$value instanceof \BackedEnum) {
