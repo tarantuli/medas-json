@@ -37,12 +37,18 @@ readonly class StringProtector
             return $value;
         }
 
-        if (is_object($value) && attribute(DataHolder::class, new \ReflectionClass($value))) {
-            return $this->encode($this->serializer->serialize($value), $urlSafe);
-        }
+        if (is_object($value)) {
+            if (attribute(DataHolder::class, new \ReflectionClass($value))) {
+                return $this->encode($this->serializer->serialize($value), $urlSafe);
+            }
 
-        if (is_object($value) && !$value instanceof \BackedEnum) {
-            throw new Exceptions\ObjectFoundInValue($value);
+            if ($value instanceof \DateTimeInterface) {
+                return $this->encode($this->serializer->serialize($value), $urlSafe);
+            }
+
+            if (!$value instanceof \BackedEnum) {
+                throw new Exceptions\ObjectFoundInValue($value);
+            }
         }
 
         if (!is_iterable($value)) {
