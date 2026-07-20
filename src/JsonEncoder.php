@@ -35,10 +35,11 @@ readonly class JsonEncoder
             return json_encode($data, flags: $flags);
         }
         catch (\JsonException $e) {
-            if (json_last_error() === JSON_ERROR_UTF8) {
-                $offset = $this->invalidUtf8OffsetFinder->find($data);
+            if ($e->getMessage() === 'Malformed UTF-8 characters, possibly incorrectly encoded') {
+                $rawString = var_export($data, true);
+                $offset = $this->invalidUtf8OffsetFinder->find($rawString);
 
-                throw new Exceptions\MalformedUtf8String($offset, var_export($data, true));
+                throw new Exceptions\MalformedUtf8String($offset, $rawString);
             }
 
             throw $e;
