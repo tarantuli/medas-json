@@ -43,7 +43,7 @@ readonly class StringProtector
             }
 
             if ($value instanceof \DateTimeInterface) {
-                return $this->encode($this->serializer->serialize($value), $urlSafe);
+                return $value->format(DATE_ATOM);
             }
 
             if (!$value instanceof \BackedEnum) {
