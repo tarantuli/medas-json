@@ -11,6 +11,7 @@ readonly class JsonEncoder
 {
     public function __construct(
         private InvalidUtf8OffsetFinder $invalidUtf8OffsetFinder,
+        private ObjectsNormalizer       $objectsNormalizer,
         private SettingsFactory         $settingsFactory,
         private StringProtector         $stringProtector,
     )
@@ -24,6 +25,11 @@ readonly class JsonEncoder
     public function encode(mixed $data, Settings|null $settings = null): string
     {
         $settings ??= $this->settingsFactory->create();
+
+        if ($settings->normalizeObjects) {
+            $data = $this->objectsNormalizer->normalize($data);
+        }
+
         $data = $this->stringProtector->encode($data, $settings->urlSafe);
         $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR;
 

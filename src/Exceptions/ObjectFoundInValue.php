@@ -15,6 +15,6 @@ class ObjectFoundInValue extends BaseException
 
     public function pattern(): string
     {
-        return 'non-\BackedEnum object found of class %s';
+        return 'non-BackedEnum object found of class %s';
     }
 }
