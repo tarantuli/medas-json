@@ -10,18 +10,22 @@ use Medas\Core\{
     Attributes\PreferredDefault,
     Attributes\Service,
     Interfaces\Serializer,
-    Interfaces\Uuid
+    Interfaces\Uuid,
+    Serializers\PhpSerializer
 };
 
 #[Service]
 readonly class ObjectsNormalizer
 {
+    private Serializer $serializer;
+
     public function __construct(
         #[PreferredDefault('Medas\ObjectToArraySerializer\ObjectToArraySerializer')]
-        private Serializer       $serializer,
+        Serializer|null          $serializer,
         private AttributeChecker $attributeChecker,
     )
     {
+        $this->serializer = $serializer === null ? new PhpSerializer() : $serializer;
     }
 
     public function normalize(mixed $value): mixed
