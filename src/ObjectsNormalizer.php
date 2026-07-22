@@ -9,6 +9,7 @@ use Medas\Core\{
     Attributes\DataHolder,
     Attributes\PreferredDefault,
     Attributes\Service,
+    Interfaces\HasId,
     Interfaces\Serializer,
     Interfaces\Uuid,
     Serializers\PhpSerializer
@@ -31,6 +32,10 @@ readonly class ObjectsNormalizer
     public function normalize(mixed $value): mixed
     {
         if (is_object($value)) {
+            if ($value instanceof HasId) {
+                return (string) $value->id();
+            }
+
             if ($value instanceof Uuid) {
                 return (string) $value;
             }
