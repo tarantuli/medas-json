@@ -48,7 +48,7 @@ readonly class ObjectsNormalizer
                 return $this->normalize($this->serializer->serialize($value));
             }
 
-            if (!$value instanceof \BackedEnum) {
+            if (!$value instanceof \BackedEnum && !is_iterable($value)) {
                 throw new Exceptions\ObjectFoundInValue($value);
             }
         }
